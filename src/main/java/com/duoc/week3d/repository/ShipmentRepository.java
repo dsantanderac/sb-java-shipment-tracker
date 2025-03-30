@@ -15,34 +15,50 @@ import com.duoc.week3d.model.ShipmentStatus.Status;
 // Repository layer where the data is managed
 @Repository
 public class ShipmentRepository {
-    private final List<Shipment> shipments = new ArrayList<>();
+        private final List<Shipment> shipments = new ArrayList<>();
 
-    // Return all available shipments
-    public List<Shipment> getShipments() {
-        return shipments;
-    }
+        // Return all available shipments
+        public List<Shipment> getShipments() {
+                return shipments;
+        }
 
-    public ShipmentRepository() {
-        // Generate some in-memory shipments.
-        shipments.add(new Shipment(1, "Sender 1", "Receiver 1", new Location("CHN", "Pekin"),
-                new Location("CHL", "Santiago"), new Location("CHL", "Santiago"),
-                new ShipmentStatus(Status.IN_TRANSIT, "Correos de Chile"), new GregorianCalendar(2025, 4, 1).getTime(),
-                Date.from(new Date().toInstant()), Date.from(new Date().toInstant())));
-        shipments.add(new Shipment(2, "Sender 2", "Receiver 2", new Location("USA", "Miami"),
-                new Location("CHL", "Valparaiso"), new Location("USA", "Miami"),
-                new ShipmentStatus(Status.PENDING, "USP"), new GregorianCalendar(2025, 4, 15).getTime(),
-                Date.from(new Date().toInstant()), Date.from(new Date().toInstant())));
-        shipments.add(new Shipment(3, "Sender 3", "Receiver 3", new Location("USA", "New York"),
-                new Location("CHL", "Curico"), new Location("CHL", "Curico"),
-                new ShipmentStatus(Status.DELIVERED, "Starken"), new GregorianCalendar(2025, 3, 28).getTime(),
-                new GregorianCalendar(2025, 3, 28).getTime(), new GregorianCalendar(2025, 2, 28).getTime()));
-        shipments.add(new Shipment(4, "Sender 4", "Receiver 4", new Location("BRA", "Sao Paulo"),
-                new Location("CHL", "Valparaiso"), new Location("CHL", "Valparaiso"),
-                new ShipmentStatus(Status.DELIVERED, "Chilexpress"), new GregorianCalendar(2025, 3, 28).getTime(),
-                new GregorianCalendar(2025, 3, 28).getTime(), new GregorianCalendar(2025, 2, 28).getTime()));
-        shipments.add(new Shipment(5, "Sender 5", "Receiver 5", new Location("USA", "Miami"),
-                new Location("CHL", "Santiago"), new Location("ARG", "Buenos Aires"),
-                new ShipmentStatus(Status.CANCELLED, "USP"), new GregorianCalendar(2025, 3, 28).getTime(),
-                new GregorianCalendar(2025, 3, 28).getTime(), new GregorianCalendar(2025, 2, 28).getTime()));
-    }
+        // Return a specific shipment details by id
+        public Shipment getShipmentById(int id) {
+                for (Shipment shipment : shipments) {
+                        if (shipment.getId() == id)
+                                return shipment;
+                }
+                return null;
+        }
+
+        public ShipmentRepository() {
+                // Generate some in-memory shipments.
+                shipments.add(new Shipment(1, "Sender 1", "Receiver 1", new Location("CHN", "Pekin"),
+                                new Location("CHL", "Santiago"), new Location("CHL", "Santiago"),
+                                new ShipmentStatus(Status.IN_TRANSIT, "Correos de Chile"),
+                                new GregorianCalendar(2025, 4, 1).getTime(),
+                                Date.from(new Date().toInstant()), Date.from(new Date().toInstant())));
+                shipments.add(new Shipment(2, "Sender 2", "Receiver 2", new Location("USA", "Miami"),
+                                new Location("CHL", "Valparaiso"), new Location("USA", "Miami"),
+                                new ShipmentStatus(Status.PENDING, "USP"), new GregorianCalendar(2025, 4, 15).getTime(),
+                                Date.from(new Date().toInstant()), Date.from(new Date().toInstant())));
+                shipments.add(new Shipment(3, "Sender 3", "Receiver 3", new Location("USA", "New York"),
+                                new Location("CHL", "Curico"), new Location("CHL", "Curico"),
+                                new ShipmentStatus(Status.DELIVERED, "Starken"),
+                                new GregorianCalendar(2025, 3, 28).getTime(),
+                                new GregorianCalendar(2025, 3, 28).getTime(),
+                                new GregorianCalendar(2025, 2, 28).getTime()));
+                shipments.add(new Shipment(4, "Sender 4", "Receiver 4", new Location("BRA", "Sao Paulo"),
+                                new Location("CHL", "Valparaiso"), new Location("CHL", "Valparaiso"),
+                                new ShipmentStatus(Status.DELIVERED, "Chilexpress"),
+                                new GregorianCalendar(2025, 3, 28).getTime(),
+                                new GregorianCalendar(2025, 3, 28).getTime(),
+                                new GregorianCalendar(2025, 2, 28).getTime()));
+                shipments.add(new Shipment(5, "Sender 5", "Receiver 5", new Location("USA", "Miami"),
+                                new Location("CHL", "Santiago"), new Location("ARG", "Buenos Aires"),
+                                new ShipmentStatus(Status.CANCELLED, "USP"),
+                                new GregorianCalendar(2025, 3, 28).getTime(),
+                                new GregorianCalendar(2025, 3, 28).getTime(),
+                                new GregorianCalendar(2025, 2, 28).getTime()));
+        }
 }

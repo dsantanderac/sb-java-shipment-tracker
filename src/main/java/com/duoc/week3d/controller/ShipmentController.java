@@ -9,6 +9,7 @@ import com.duoc.week3d.service.ShipmentService;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 // Shipments controller layer
 @RequestMapping("/api/shipments")
@@ -24,4 +25,10 @@ public class ShipmentController {
     public List<Shipment> getAllShipments() {
         return shipmentService.getShipments();
     }
+
+    @GetMapping("/{id}")
+    public Shipment getShipmentById(@PathVariable int id) {
+        return shipmentService.getShipmentById(id);
+    }
+
 }

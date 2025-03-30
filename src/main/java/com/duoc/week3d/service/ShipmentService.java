@@ -6,4 +6,6 @@ import com.duoc.week3d.model.Shipment;
 
 public interface ShipmentService {
     List<Shipment> getShipments();
+
+    Shipment getShipmentById(int id);
 }
