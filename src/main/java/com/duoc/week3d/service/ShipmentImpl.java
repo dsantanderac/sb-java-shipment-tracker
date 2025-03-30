@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.duoc.week3d.model.Location;
 import com.duoc.week3d.model.Shipment;
+import com.duoc.week3d.model.ShipmentStatus;
 import com.duoc.week3d.repository.ShipmentRepository;
 
 // Service layer to manage business logic
@@ -29,5 +30,11 @@ public class ShipmentImpl implements ShipmentService {
     @Override
     public Location getShipmentCurrentLocationById(int id) {
         return shipmentRepository.getCurrentLocationById(id);
+    }
+
+    // Override get shipment status by id
+    @Override
+    public ShipmentStatus getShipmentStatusById(int id) {
+        return shipmentRepository.getStatusById(id);
     }
 }

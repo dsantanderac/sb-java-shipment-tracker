@@ -40,6 +40,15 @@ public class ShipmentRepository {
                 return null;
         }
 
+        // Return status of a specific shipment
+        public ShipmentStatus getStatusById(int id) {
+                for (Shipment shipment : shipments) {
+                        if (shipment.getId() == id)
+                                return shipment.getStatus();
+                }
+                return null;
+        }
+
         public ShipmentRepository() {
                 // Generate some in-memory shipments.
                 shipments.add(new Shipment(1, "Sender 1", "Receiver 1", new Location("CHN", "Pekin"),
