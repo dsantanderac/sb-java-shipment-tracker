@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.duoc.week3d.model.Location;
 import com.duoc.week3d.model.Shipment;
 import com.duoc.week3d.repository.ShipmentRepository;
 
@@ -22,5 +23,11 @@ public class ShipmentImpl implements ShipmentService {
     @Override
     public Shipment getShipmentById(int id) {
         return shipmentRepository.getShipmentById(id);
+    }
+
+    // Override get shipment location by id
+    @Override
+    public Location getShipmentCurrentLocationById(int id) {
+        return shipmentRepository.getCurrentLocationById(id);
     }
 }

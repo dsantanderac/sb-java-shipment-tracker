@@ -31,6 +31,15 @@ public class ShipmentRepository {
                 return null;
         }
 
+        // Return the current location of a specific shipment
+        public Location getCurrentLocationById(int id) {
+                for (Shipment shipment : shipments) {
+                        if (shipment.getId() == id)
+                                return shipment.getCurrentLocation();
+                }
+                return null;
+        }
+
         public ShipmentRepository() {
                 // Generate some in-memory shipments.
                 shipments.add(new Shipment(1, "Sender 1", "Receiver 1", new Location("CHN", "Pekin"),

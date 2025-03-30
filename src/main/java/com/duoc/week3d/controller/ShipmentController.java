@@ -3,6 +3,7 @@ package com.duoc.week3d.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.duoc.week3d.model.Location;
 import com.duoc.week3d.model.Shipment;
 import com.duoc.week3d.service.ShipmentService;
 
@@ -31,4 +32,8 @@ public class ShipmentController {
         return shipmentService.getShipmentById(id);
     }
 
+    @GetMapping("/{id}/location")
+    public Location getShipmentCurrentLocationById(@PathVariable int id) {
+        return shipmentService.getShipmentCurrentLocationById(id);
+    }
 }
