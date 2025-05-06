@@ -1,4 +1,4 @@
-package com.duoc.week3d.model;
+package com.duoc.week3d.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Location {
-    private String country;
-    private String city;
+public class UpdateStatusRequest {
+    private int statusId;
 }

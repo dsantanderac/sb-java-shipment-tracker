@@ -1,72 +1,65 @@
 package com.duoc.week3d.model;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-// Class to represent a shipment
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Entity
+@Table(name = "shipment")
 public class Shipment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sq_shipment_id")
+    @SequenceGenerator(name = "sq_shipment_id", sequenceName = "sq_shipment_id", allocationSize = 1, initialValue = 1)
     private int id;
+
+    @NotNull(message = "Sender name cannot be null")
+    @Size(min = 1, max = 50, message = "Sender name must be between 1 and 50 characters")
     private String sender;
+
+    @NotNull(message = "Receiver name cannot be null")
+    @Size(min = 1, max = 50, message = "Receiver name must be between 1 and 50 characters")
     private String receiver;
-    private Location originLocation;
-    private Location deliverLocation;
-    private Location currentLocation;
-    private ShipmentStatus status;
-    private Date estimatedArrival;
-    private Date lastUpdated;
-    private Date createdAt;
 
-    public Shipment(int id, String sender, String receiver, Location originLocation, Location deliverLocation,
-            Location currentLocation, ShipmentStatus status,
-            Date estimatedArrival, Date lastUpdated, Date createdAt) {
-        this.id = id;
-        this.sender = sender;
-        this.receiver = receiver;
-        this.originLocation = originLocation;
-        this.deliverLocation = deliverLocation;
-        this.currentLocation = currentLocation;
-        this.status = status;
-        this.estimatedArrival = estimatedArrival;
-        this.lastUpdated = lastUpdated;
-        this.createdAt = createdAt;
-    }
+    @NotNull(message = "Origin country cannot be null")
+    private String countryOrigin;
 
-    public int getId() {
-        return id;
-    }
+    @NotNull(message = "Origin country cannot be null")
+    private String cityOrigin;
 
-    public String getSender() {
-        return sender;
-    }
+    @NotNull(message = "Destination country cannot be null")
+    private String countryDestination;
 
-    public String getReceiver() {
-        return receiver;
-    }
+    @NotNull(message = "Destination city cannot be null")
+    private String cityDestination;
 
-    public Location getOriginLocation() {
-        return originLocation;
-    }
+    @NotNull(message = "Current location country cannot be null")
+    private String currentLocationCountry;
 
-    public Location getDeliverLocation() {
-        return deliverLocation;
-    }
+    @NotNull(message = "Current location city cannot be null")
+    private String currentLocationCity;
 
-    public Location getCurrentLocation() {
-        return currentLocation;
-    }
+    private LocalDate estimatedArrival;
+    private LocalDateTime lastUpdated = LocalDateTime.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
 
-    public ShipmentStatus getStatus() {
-        return status;
-    }
-
-    public Date getEstimatedArrival() {
-        return estimatedArrival;
-    }
-
-    public Date getLastUpdated() {
-        return lastUpdated;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "status_id", nullable = false)
+    private Status status;
 }
