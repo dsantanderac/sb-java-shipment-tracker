@@ -14,8 +14,11 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,9 +26,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+
 // Shipments controller layer
 @RequestMapping("/api/shipments")
 @RestController
+@CrossOrigin(origins = "*")
 public class ShipmentController {
     private final ShipmentService shipmentService;
     private static final Logger logger = LoggerFactory.getLogger(ShipmentController.class);
@@ -35,49 +42,71 @@ public class ShipmentController {
     }
 
     @GetMapping
-    public List<Shipment> getAllShipments() {
-        return shipmentService.getShipments();
+    public ResponseEntity<CollectionModel<EntityModel<Shipment>>> getAllShipments() {
+        List<EntityModel<Shipment>> shipments = shipmentService.getShipments().stream()
+                .map(shipment -> {
+                    EntityModel<Shipment> shipmentModel = EntityModel.of(shipment);
+                    shipmentModel.add(
+                            linkTo(methodOn(ShipmentController.class).getShipmentById(shipment.getId())).withSelfRel());
+                    return shipmentModel;
+                }).toList();
+        logger.info("Retrieved {} users", shipments.size());
+
+        return ResponseEntity.ok(CollectionModel.of(shipments,
+                linkTo(methodOn(ShipmentController.class).getAllShipments()).withSelfRel()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Shipment> getShipmentById(@PathVariable int id) {
+    public ResponseEntity<EntityModel<Shipment>> getShipmentById(@PathVariable int id) {
         Optional<Shipment> shipment = shipmentService.getShipmentById(id);
-        return shipment.map(value -> {
-            logger.info("Shipment found by ID: {}", id);
-            return new ResponseEntity<>(value, HttpStatus.OK);
-        }).orElseGet(() -> {
+        if (shipment.isEmpty()) {
             logger.info("Shipment not found by ID: {}", id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        });
+        }
+        EntityModel<Shipment> shipmentModel = EntityModel.of(shipment.get());
+        shipmentModel.add(linkTo(methodOn(ShipmentController.class).getShipmentById(id)).withSelfRel());
+
+        return ResponseEntity.ok(shipmentModel);
     }
 
     @GetMapping("/{id}/location")
-    public ResponseEntity<Location> getShipmentCurrentLocationById(@PathVariable int id) {
+    public ResponseEntity<EntityModel<Location>> getShipmentCurrentLocationById(@PathVariable int id) {
         Location location = shipmentService.getShipmentCurrentLocationById(id);
         if (location == null) {
             logger.info("Shipment not found by ID: {}", id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         logger.info("Shipment location found by ID: {}", id);
-        return ResponseEntity.ok(location);
+        EntityModel<Location> locationModel = EntityModel.of(location);
+        locationModel.add(linkTo(methodOn(ShipmentController.class).getShipmentCurrentLocationById(id)).withSelfRel());
+        return ResponseEntity.ok(locationModel);
     }
 
     @GetMapping("/{id}/status")
-    public ResponseEntity<Status> getShipmentStatusById(@PathVariable int id) {
+    public ResponseEntity<EntityModel<Status>> getShipmentStatusById(@PathVariable int id) {
         Status status = shipmentService.getShipmentStatusById(id);
         if (status == null) {
             logger.info("Shipment not found by ID: {}", id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         logger.info("Shipment status found by ID: {}", id);
-        return ResponseEntity.ok(status);
+        EntityModel<Status> statusModel = EntityModel.of(status);
+        statusModel.add(linkTo(methodOn(ShipmentController.class).getShipmentStatusById(id)).withSelfRel());
+
+        return ResponseEntity.ok(statusModel);
     }
 
     @PostMapping
-    public ResponseEntity<Shipment> createShipment(@RequestBody Shipment shipment) {
+    public ResponseEntity<EntityModel<Shipment>> createShipment(@RequestBody Shipment shipment) {
         Shipment savedShipment = shipmentService.saveShipment(shipment);
         logger.info("Shipment saved with ID: {}", savedShipment.getId());
-        return new ResponseEntity<>(savedShipment, HttpStatus.CREATED);
+        EntityModel<Shipment> shipmentModel = EntityModel.of(savedShipment);
+        shipmentModel.add(linkTo(methodOn(ShipmentController.class).getShipmentById(savedShipment.getId()))
+                .withSelfRel());
+
+        return ResponseEntity.created(
+                linkTo(methodOn(ShipmentController.class).getShipmentById(savedShipment.getId())).toUri())
+                .body(shipmentModel);
     }
 
     @DeleteMapping("/{id}")
@@ -88,7 +117,7 @@ public class ShipmentController {
     }
 
     @PutMapping("/{id}/status")
-    public ResponseEntity<Shipment> updateShipmentStatus(@PathVariable int id,
+    public ResponseEntity<EntityModel<Shipment>> updateShipmentStatus(@PathVariable int id,
             @RequestBody UpdateStatusRequest request) {
         Shipment updatedShipment = shipmentService.updateShipmentStatus(id, request.getStatusId());
         if (updatedShipment == null) {
@@ -96,11 +125,15 @@ public class ShipmentController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         logger.info("Shipment status updated with ID: {}", id);
-        return new ResponseEntity<>(updatedShipment, HttpStatus.OK);
+        EntityModel<Shipment> shipmentModel = EntityModel.of(updatedShipment);
+        shipmentModel.add(linkTo(methodOn(ShipmentController.class).getShipmentById(updatedShipment.getId()))
+                .withSelfRel());
+
+        return new ResponseEntity<>(shipmentModel, HttpStatus.OK);
     }
 
     @PutMapping("/{id}/location")
-    public ResponseEntity<Shipment> updateShipmentLocation(@PathVariable int id,
+    public ResponseEntity<EntityModel<Shipment>> updateShipmentLocation(@PathVariable int id,
             @RequestBody Location location) {
         Shipment updatedShipment = shipmentService.updateShipmentLocation(id, location);
         if (updatedShipment == null) {
@@ -108,6 +141,10 @@ public class ShipmentController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         logger.info("Shipment location updated with ID: {}", id);
-        return new ResponseEntity<>(updatedShipment, HttpStatus.OK);
+        EntityModel<Shipment> shipmentModel = EntityModel.of(updatedShipment);
+        shipmentModel.add(linkTo(methodOn(ShipmentController.class).getShipmentById(updatedShipment.getId()))
+                .withSelfRel());
+
+        return new ResponseEntity<>(shipmentModel, HttpStatus.OK);
     }
 }
