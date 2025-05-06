@@ -1,0 +1,10 @@
+/Users/x0dsanta/Developer/Duoc/Fullstack_1/Week_3/week3d/src/main/java/com/duoc/week3d/Week3dApplication.java
+/Users/x0dsanta/Developer/Duoc/Fullstack_1/Week_3/week3d/src/main/java/com/duoc/week3d/controller/ShipmentController.java
+/Users/x0dsanta/Developer/Duoc/Fullstack_1/Week_3/week3d/src/main/java/com/duoc/week3d/model/Location.java
+/Users/x0dsanta/Developer/Duoc/Fullstack_1/Week_3/week3d/src/main/java/com/duoc/week3d/model/Shipment.java
+/Users/x0dsanta/Developer/Duoc/Fullstack_1/Week_3/week3d/src/main/java/com/duoc/week3d/model/Status.java
+/Users/x0dsanta/Developer/Duoc/Fullstack_1/Week_3/week3d/src/main/java/com/duoc/week3d/model/request/UpdateStatusRequest.java
+/Users/x0dsanta/Developer/Duoc/Fullstack_1/Week_3/week3d/src/main/java/com/duoc/week3d/repository/ShipmentRepository.java
+/Users/x0dsanta/Developer/Duoc/Fullstack_1/Week_3/week3d/src/main/java/com/duoc/week3d/repository/StatusRepository.java
+/Users/x0dsanta/Developer/Duoc/Fullstack_1/Week_3/week3d/src/main/java/com/duoc/week3d/service/ShipmentImpl.java
+/Users/x0dsanta/Developer/Duoc/Fullstack_1/Week_3/week3d/src/main/java/com/duoc/week3d/service/ShipmentService.java

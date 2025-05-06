@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.duoc.week3d.controller.ShipmentControllerTest
+-------------------------------------------------------------------------------
+Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.167 s -- in com.duoc.week3d.controller.ShipmentControllerTest

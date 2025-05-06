@@ -1,0 +1,14 @@
+com/duoc/week3d/Week3dApplication.class
+com/duoc/week3d/model/Location.class
+com/duoc/week3d/model/Location$LocationBuilder.class
+com/duoc/week3d/service/ShipmentImpl.class
+com/duoc/week3d/model/request/UpdateStatusRequest.class
+com/duoc/week3d/model/Shipment.class
+com/duoc/week3d/service/ShipmentService.class
+com/duoc/week3d/repository/ShipmentRepository.class
+com/duoc/week3d/repository/StatusRepository.class
+com/duoc/week3d/controller/ShipmentController.class
+com/duoc/week3d/model/Shipment$ShipmentBuilder.class
+com/duoc/week3d/model/Status$StatusBuilder.class
+com/duoc/week3d/model/request/UpdateStatusRequest$UpdateStatusRequestBuilder.class
+com/duoc/week3d/model/Status.class
